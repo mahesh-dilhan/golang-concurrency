@@ -12,10 +12,8 @@ var goRoutine sync.WaitGroup
 func main() {
 	rand.Seed(time.Now().Unix())
 
-	// Create a buffered channel to manage the employee vs project load.
 	projects := make(chan string, 10)
 
-	// Launch 5 goroutines to handle the projects.
 	goRoutine.Add(5)
 	for i := 1; i <= 5; i++ {
 		go employee(projects, i)
@@ -25,7 +23,6 @@ func main() {
 		projects <- fmt.Sprintf("Project :%d", j)
 	}
 
-	// Close the channel so the goroutines will quit
 	close(projects)
 	goRoutine.Wait()
 }
@@ -33,7 +30,7 @@ func main() {
 func employee(projects chan string, employee int) {
 	defer goRoutine.Done()
 	for {
-		// Wait for project to be assigned.
+
 		project, result := <-projects
 
 		if result == false {
